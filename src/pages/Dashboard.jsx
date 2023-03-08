@@ -35,7 +35,19 @@ export const dashboardLoader = () => {
 
 const Dashboard = () => {
   const { userName } = useLoaderData();
-  return <div>{userName ? <p>{userName}</p> : <Intro />}</div>;
+  return (
+    <>
+      {userName ? (
+        <div className="dashboard">
+          <h1>
+            Welcome back, <span className="accent">{userName}</span>
+          </h1>
+        </div>
+      ) : (
+        <Intro />
+      )}
+    </>
+  );
 };
 
 export default Dashboard;
