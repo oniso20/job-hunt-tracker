@@ -1,5 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+// Actions
+import { logoutAction } from "./actions/logout";
+
 // Layouts
 import Main, { mainLoader } from "./layouts/Main";
 
@@ -15,11 +18,14 @@ const router = createBrowserRouter([
     errorElement: <Error />,
     children: [
       {
-        // path: "/",
-        index: true, // works same as path: "/"
+        path: "/",
         element: <Dashboard />,
         loader: dashboardLoader,
         errorElement: <Error />,
+      },
+      {
+        path: "logout",
+        action: logoutAction,
       },
       {
         path: "about",

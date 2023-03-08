@@ -1,7 +1,7 @@
 import React from "react";
 
 // React router imports
-import { Outlet } from "react-router-dom";
+import { Outlet, useLoaderData } from "react-router-dom";
 
 // Helper functions
 import { fetchData } from "../helpers";
@@ -21,9 +21,10 @@ export const mainLoader = () => {
 };
 
 const Main = () => {
+  const { userName } = useLoaderData();
   return (
     <div className="layout">
-      <Nav />
+      <Nav userName={userName} />
       <main>
         <Outlet />
       </main>
