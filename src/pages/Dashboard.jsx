@@ -8,8 +8,9 @@ import { toast } from "react-toastify";
 
 // Components
 import Intro from "../components/Intro";
+import AddJobTitle from "../components/AddJobTitle";
 
-// Helper functions
+// import Helper functions
 import { fetchData } from "../helpers";
 
 // Action function
@@ -28,13 +29,15 @@ export async function dashboardAction({ request }) {
 // Data loader function
 export const dashboardLoader = () => {
   const userName = fetchData("userName");
+  const budgets = fetchData("budget");
   return {
     userName,
+    budgets,
   };
 };
 
 const Dashboard = () => {
-  const { userName } = useLoaderData();
+  const { userName, budgets } = useLoaderData();
   return (
     <>
       {userName ? (
@@ -42,6 +45,14 @@ const Dashboard = () => {
           <h1>
             Welcome back, <span className="accent">{userName}</span>
           </h1>
+          <div className="grid-sm">
+            {budgets ? <p></p> : <p></p>}
+            <div className="grid-lg">
+              <div className="flex-lg">
+                <AddJobTitle />
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <Intro />
