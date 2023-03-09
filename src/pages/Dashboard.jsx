@@ -11,7 +11,7 @@ import Intro from "../components/Intro";
 import AddJobTitle from "../components/AddJobTitle";
 
 // import Helper functions
-import { createNewRole, fetchData } from "../helpers";
+import { createNewRole, fetchData, waait } from "../helpers";
 
 // Data loader function
 export const dashboardLoader = () => {
@@ -25,6 +25,7 @@ export const dashboardLoader = () => {
 
 // Action function
 export async function dashboardAction({ request }) {
+  await waait();
   const data = await request.formData();
   const { _action, ...values } = Object.fromEntries(data);
 

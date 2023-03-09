@@ -53,9 +53,15 @@ const AddJobTitle = () => {
           />
         </div>
         <input type="hidden" name="_action" value="createNewRole" />
-        <button type="submit" className="btn btn--dark">
-          <span>Add New Role</span>
-          <BriefcaseIcon width={20} />
+        <button type="submit" className="btn btn--dark" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <span>Adding...</span>
+          ) : (
+            <>
+              <span>Add New Role</span>
+              <BriefcaseIcon width={20} />
+            </>
+          )}
         </button>
       </fetcher.Form>
     </div>

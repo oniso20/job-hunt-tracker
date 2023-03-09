@@ -1,3 +1,7 @@
+export const waait = () => new Promise(res => setTimeout(res, Math.random() * 2000));
+
+
+// colors
 const generateRandomColor = () => {
     const existingRoleLength = fetchData("roles")?.length ?? 0;
 
