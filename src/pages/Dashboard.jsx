@@ -11,20 +11,7 @@ import Intro from "../components/Intro";
 import AddJobTitle from "../components/AddJobTitle";
 
 // import Helper functions
-import { fetchData } from "../helpers";
-
-// Action function
-export async function dashboardAction({ request }) {
-  const data = await request.formData();
-  const formData = Object.fromEntries(data);
-  try {
-    localStorage.setItem("userName", JSON.stringify(formData.userName));
-
-    return toast.success(`Welcome ${formData.userName}`);
-  } catch (err) {
-    throw new Error("There was an error creating your account.");
-  }
-}
+import { createNewRole, fetchData } from "../helpers";
 
 // Data loader function
 export const dashboardLoader = () => {
@@ -35,6 +22,36 @@ export const dashboardLoader = () => {
     budgets,
   };
 };
+
+// Action function
+export async function dashboardAction({ request }) {
+  const data = await request.formData();
+  const { _action, ...values } = Object.fromEntries(data);
+
+  // new user submission
+  if (_action === "newUser") {
+    try {
+      localStorage.setItem("userName", JSON.stringify(values.userName));
+
+      return toast.success(`Welcome ${values.userName}`);
+    } catch (err) {
+      throw new Error("There was an error creating your account.");
+    }
+  }
+
+  // New role submission
+  if (_action === "createNewRole") {
+    try {
+      createNewRole({
+        name: values.newJobTitle,
+        amount: values.targetAmount,
+      });
+      return toast.success("Role created!");
+    } catch (e) {
+      throw new Error("There was a problem creating your new job title.");
+    }
+  }
+}
 
 const Dashboard = () => {
   const { userName, budgets } = useLoaderData();

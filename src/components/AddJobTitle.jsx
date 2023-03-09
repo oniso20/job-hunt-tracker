@@ -1,21 +1,35 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 // Library imports
 // Heroicons
 import { BriefcaseIcon } from "@heroicons/react/24/solid";
 
 // React router imports
-import { Form } from "react-router-dom";
+import { useFetcher } from "react-router-dom";
 
 const AddJobTitle = () => {
+  const fetcher = useFetcher();
+  const isSubmitting = fetcher.state === "submitting";
+
+  const formRef = useRef();
+  const focusRef = useRef();
+
+  useEffect(() => {
+    if (isSubmitting) {
+      formRef.current.reset();
+      focusRef.current.focus();
+    }
+  }, [isSubmitting, formRef]);
+
   return (
     <div className="form-wrapper">
       <h2 className="h3">Add a Job Tittle</h2>
-      <Form method="post" className="grid-sm">
+      <fetcher.Form method="post" ref={formRef} className="grid-sm">
         <div className="grid-xs">
           <label htmlFor="newJobTitle">Job Title</label>
           <input
             id="newJobTitle"
+            ref={focusRef}
             type="text"
             name="newJobTitle"
             required
@@ -38,11 +52,12 @@ const AddJobTitle = () => {
             autoComplete="off"
           />
         </div>
+        <input type="hidden" name="_action" value="createNewRole" />
         <button type="submit" className="btn btn--dark">
           <span>Add New Role</span>
           <BriefcaseIcon width={20} />
         </button>
-      </Form>
+      </fetcher.Form>
     </div>
   );
 };
