@@ -9,17 +9,18 @@ import { toast } from "react-toastify";
 // Components
 import Intro from "../components/Intro";
 import AddJobTitle from "../components/AddJobTitle";
+import AddApplicationForm from "../components/AddApplicationForm";
 
 // import Helper functions
-import { createNewRole, fetchData, waait } from "../helpers";
+import { createApplication, createNewRole, fetchData, waait } from "../helpers";
 
 // Data loader function
 export const dashboardLoader = () => {
   const userName = fetchData("userName");
-  const budgets = fetchData("budget");
+  const roles = fetchData("roles");
   return {
     userName,
-    budgets,
+    roles,
   };
 };
 
@@ -40,7 +41,7 @@ export async function dashboardAction({ request }) {
     }
   }
 
-  // New role submission
+  // New role creation
   if (_action === "createNewRole") {
     try {
       createNewRole({
@@ -52,10 +53,31 @@ export async function dashboardAction({ request }) {
       throw new Error("There was a problem creating your new job title.");
     }
   }
+
+  // New application submission
+  if (_action === "createApplication") {
+    try {
+      // Create an application
+      createApplication({
+        name: values.newApplication,
+        source: values.sourceLink,
+        status: values.status,
+        notes: values.notes,
+        deadlineDate: values.deadlineDate,
+        budgetId: values.matchingRole,
+      });
+
+      return toast.success(
+        `Application for ${values.newApplication}  created!`
+      ); //newApplication refers to the company name object
+    } catch (e) {
+      throw new Error("There was a problem creating your new job application.");
+    }
+  }
 }
 
 const Dashboard = () => {
-  const { userName, budgets } = useLoaderData();
+  const { userName, roles: roles } = useLoaderData();
   return (
     <>
       {userName ? (
@@ -64,12 +86,26 @@ const Dashboard = () => {
             Welcome back, <span className="accent">{userName}</span>
           </h1>
           <div className="grid-sm">
-            {budgets ? <p></p> : <p></p>}
-            <div className="grid-lg">
-              <div className="flex-lg">
+            {roles && roles.length > 0 ? (
+              <div className="grid-lg">
+                <div className="flex-lg">
+                  <AddJobTitle />
+                  <AddApplicationForm roles={roles} />
+                </div>
+              </div>
+            ) : (
+              <div className="grid-sm">
+                <p>
+                  Stay positive and keep applying! - the right job is out there
+                  for you.
+                </p>
+                <p>
+                  Add a job tittle and set a total applications goal to get
+                  started!
+                </p>
                 <AddJobTitle />
               </div>
-            </div>
+            )}
           </div>
         </div>
       ) : (

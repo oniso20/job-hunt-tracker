@@ -31,6 +31,32 @@ export const createNewRole = ({ name, amount }) => {
     );
 };
 
+// Create job application
+
+export const createApplication = ({
+    name,
+    budgetId,
+    source,
+    deadlineDate,
+    status,
+    notes
+}) => {
+    const newItem = {
+        id: crypto.randomUUID(),
+        createdAt: Date.now(),
+        name,
+        source,
+        status,
+        notes,
+        deadlineDate,
+        budgetId: budgetId
+    };
+    const existingApplications = fetchData("applications") ?? [];
+    return localStorage.setItem("applications",
+        JSON.stringify([...existingApplications, newItem])
+    );
+};
+
 // delete item
 
 export const deleteData = ({ key }) => {

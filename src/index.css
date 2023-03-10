@@ -437,7 +437,7 @@ select {
   z-index: -1;
 }
 
-.expense-inputs {
+.application-inputs {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -445,7 +445,7 @@ select {
 }
 
 @media screen and (max-width: 725px) {
-  .expense-inputs {
+  .application-inputs {
     -ms-flex-wrap: wrap;
     flex-wrap: wrap;
   }
