@@ -451,8 +451,8 @@ select {
   }
 }
 
-/* budgets */
-.budgets {
+/* applications */
+.applications {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -461,7 +461,7 @@ select {
   gap: var(--space-md);
 }
 
-.budget {
+.application {
   --backdrop: var(--accent);
   display: -ms-grid;
   display: grid;
@@ -480,7 +480,7 @@ select {
   color: hsl(var(--backdrop));
 }
 
-.budget>.flex-sm {
+.application>.flex-sm {
   padding-top: var(--space-sm);
   display: -webkit-box;
   display: -ms-flexbox;

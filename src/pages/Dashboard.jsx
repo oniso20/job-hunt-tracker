@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import Intro from "../components/Intro";
 import AddJobTitle from "../components/AddJobTitle";
 import AddApplicationForm from "../components/AddApplicationForm";
+import ApplicationItem from "../components/ApplicationItem";
 
 // import Helper functions
 import { createApplication, createNewRole, fetchData, waait } from "../helpers";
@@ -66,7 +67,14 @@ export async function dashboardAction({ request }) {
         deadlineDate: values.deadlineDate,
         budgetId: values.matchingRole,
       });
-
+      // Check if deadlineDate has already passed
+      const deadlineDate = new Date(values.deadlineDate);
+      const today = new Date();
+      if (deadlineDate < today) {
+        return toast.error(
+          `Application for ${values.newApplication} deadline has already passed!`
+        );
+      }
       return toast.success(
         `Application for ${values.newApplication}  created!`
       ); //newApplication refers to the company name object
@@ -91,6 +99,12 @@ const Dashboard = () => {
                 <div className="flex-lg">
                   <AddJobTitle />
                   <AddApplicationForm roles={roles} />
+                </div>
+                <h2>Existing Applications</h2>
+                <div className="applications">
+                  {roles.map((role) => {
+                    return <ApplicationItem key={role.id} role={role} />;
+                  })}
                 </div>
               </div>
             ) : (
