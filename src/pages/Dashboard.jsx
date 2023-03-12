@@ -19,7 +19,7 @@ import { toast } from "react-toastify";
 import Intro from "../components/Intro";
 import AddJobTitle from "../components/AddJobTitle";
 import AddApplicationForm from "../components/AddApplicationForm";
-import ApplicationItem from "../components/ApplicationItem";
+import RoleItem from "../components/RoleItem";
 import Table from "../components/Table";
 
 // Data loader function
@@ -130,7 +130,7 @@ const Dashboard = () => {
                 <h2>Existing Applications</h2>
                 <div className="applications">
                   {roles.map((role) => {
-                    return <ApplicationItem key={role.id} role={role} />;
+                    return <RoleItem key={role.id} role={role} />;
                   })}
                 </div>
                 {applications && applications.length > 0 && (

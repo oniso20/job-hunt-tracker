@@ -19,8 +19,11 @@ import ApplicationsPage, {
   applicationsAction,
   applicationsLoader,
 } from "./pages/ApplicationsPage";
-import RolePage from "./pages/RolePage";
+import RolePage, { roleAction, roleLoader } from "./pages/RolePage";
 import ApplicationPage from "./pages/ApplicationPage";
+
+// actions
+import { deleteRole } from "./actions/deleteRole";
 
 const router = createBrowserRouter([
   {
@@ -39,20 +42,29 @@ const router = createBrowserRouter([
       {
         path: "role/:id",
         element: <RolePage />,
-        // loader: roleLoader,
-        // action: roleAction,
+        loader: roleLoader,
+        action: roleAction,
+        errorElement: <Error />,
+        children: [
+          {
+            path: "delete",
+            action: deleteRole,
+          },
+        ],
       },
       {
         path: "application/:id",
         element: <ApplicationPage />,
         // loader: applicationLoader,
         // action: applicationAction,
+        errorElement: <Error />,
       },
       {
         path: "applications",
         element: <ApplicationsPage />,
         loader: applicationsLoader,
         action: applicationsAction,
+        errorElement: <Error />,
       },
       {
         path: "logout",

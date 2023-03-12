@@ -93,6 +93,6 @@ export const getRole = (roleId) => {
 // get all items from local storage
 
 export const getAllMatchingItems = ({ category, key, value }) => {
-    const data = fetchData("roles") ?? [];
-    return data.filter(item => item[category] === key && item[key] === value);
+    const data = fetchData(category) ?? [];
+    return data.filter((item) => item[key] === value);
 };
