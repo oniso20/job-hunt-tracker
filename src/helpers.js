@@ -1,4 +1,4 @@
-export const waait = () => new Promise(res => setTimeout(res, Math.random() * 2000));
+export const waait = () => new Promise(res => setTimeout(res, Math.random() * 800));
 
 
 // colors
@@ -59,7 +59,13 @@ export const createApplication = ({
 
 // delete item
 
-export const deleteData = ({ key }) => {
+// delete item from local storage
+export const deleteData = ({ key, id }) => {
+    const existingData = fetchData(key);
+    if (id) {
+        const newData = existingData.filter((item) => item.id !== id);
+        return localStorage.setItem(key, JSON.stringify(newData));
+    }
     return localStorage.removeItem(key);
 };
 
@@ -84,23 +90,9 @@ export const getRole = (roleId) => {
     return roleData;
 };
 
-// get role id, name, color from roles
-
-export const getRoleData = (roleId) => {
-    const roleData = fetchData("roles").find(role => role.id === roleId);
-    return roleData;
-};
-
-
 // get all items from local storage
 
 export const getAllMatchingItems = ({ category, key, value }) => {
     const data = fetchData("roles") ?? [];
     return data.filter(item => item[category] === key && item[key] === value);
 };
-
-// const role = getAllMatchingItems({
-//     category: "roles",
-//     key: "id",
-//     value: application.roleId,
-//   });

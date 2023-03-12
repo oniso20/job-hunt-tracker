@@ -4,7 +4,13 @@ import React from "react";
 import { Link, useLoaderData } from "react-router-dom";
 
 // import Helper functions
-import { createApplication, createNewRole, fetchData, waait } from "../helpers";
+import {
+  createApplication,
+  createNewRole,
+  deleteData,
+  fetchData,
+  waait,
+} from "../helpers";
 
 // Library imports
 import { toast } from "react-toastify";
@@ -73,7 +79,10 @@ export async function dashboardAction({ request }) {
       // Check if deadlineDate has already passed
       const deadlineDate = new Date(values.deadlineDate);
       const today = new Date();
-      if (deadlineDate < today) {
+      if (
+        deadlineDate < today &&
+        values.status.toLowerCase() === "interested"
+      ) {
         return toast.error(
           `Application for ${values.newApplication} deadline has already passed!`
         );
@@ -83,6 +92,21 @@ export async function dashboardAction({ request }) {
       ); //newApplication refers to the company name object
     } catch (e) {
       throw new Error("There was a problem creating your new job application.");
+    }
+  }
+
+  // Delete Application
+  if (_action === "deleteApplication") {
+    try {
+      // Create an application
+      deleteData({
+        key: "applications",
+        id: values.applicationId,
+      });
+
+      return toast.success("Application deleted!");
+    } catch (e) {
+      throw new Error("There was a problem deleting your job application.");
     }
   }
 }

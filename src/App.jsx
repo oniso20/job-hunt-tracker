@@ -15,7 +15,12 @@ import Dashboard, { dashboardAction, dashboardLoader } from "./pages/Dashboard";
 import Error from "./pages/Error";
 
 // Pages
-import ApplicationsPage, { applicationsLoader } from "./pages/ApplicationsPage";
+import ApplicationsPage, {
+  applicationsAction,
+  applicationsLoader,
+} from "./pages/ApplicationsPage";
+import RolePage from "./pages/RolePage";
+import ApplicationPage from "./pages/ApplicationPage";
 
 const router = createBrowserRouter([
   {
@@ -32,9 +37,22 @@ const router = createBrowserRouter([
         errorElement: <Error />,
       },
       {
+        path: "role/:id",
+        element: <RolePage />,
+        // loader: roleLoader,
+        // action: roleAction,
+      },
+      {
+        path: "application/:id",
+        element: <ApplicationPage />,
+        // loader: applicationLoader,
+        // action: applicationAction,
+      },
+      {
         path: "applications",
         element: <ApplicationsPage />,
         loader: applicationsLoader,
+        action: applicationsAction,
       },
       {
         path: "logout",

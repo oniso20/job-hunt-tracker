@@ -65,14 +65,12 @@ const Table = ({ applications }) => {
                   <input
                     type="hidden"
                     name="applicationId"
-                    value={getRole(application.roleId).id}
+                    value={application.id}
                   />
                   <button
                     type="submit"
                     className="btn btn--warning"
-                    aria-label={` Delete ${
-                      getRole(application.roleId).name
-                    } application`}
+                    aria-label={` Delete ${application.name} application`}
                   >
                     <TrashIcon width={20} />
                   </button>

@@ -3,18 +3,40 @@ import React from "react";
 // React router imports
 import { useLoaderData } from "react-router-dom";
 
+// Library imports
+import { toast } from "react-toastify";
+
 // Components
 import Table from "../components/Table";
 
 // import Helper functions
-import { fetchData } from "../helpers";
+import { deleteData, fetchData } from "../helpers";
 
 // Data loader function
-export const applicationsLoader = () => {
-  const applications = fetchData("applications");
+export const applicationsLoader = async () => {
+  const applications = await fetchData("applications");
   return {
     applications,
   };
+};
+
+// action
+export const applicationsAction = async ({ request }) => {
+  const data = await request.formData();
+  const { _action, ...values } = Object.fromEntries(data);
+
+  // delete application
+  if (_action === "deleteApplication") {
+    try {
+      deleteData({
+        key: "applications",
+        id: values.applicationId,
+      });
+      return toast.success("Application deleted");
+    } catch (err) {
+      throw new Error("There was an error deleting the application.");
+    }
+  }
 };
 
 const ApplicationsPage = () => {
