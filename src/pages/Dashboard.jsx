@@ -1,7 +1,10 @@
 import React from "react";
 
 // React router imports
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
+
+// import Helper functions
+import { createApplication, createNewRole, fetchData, waait } from "../helpers";
 
 // Library imports
 import { toast } from "react-toastify";
@@ -11,17 +14,17 @@ import Intro from "../components/Intro";
 import AddJobTitle from "../components/AddJobTitle";
 import AddApplicationForm from "../components/AddApplicationForm";
 import ApplicationItem from "../components/ApplicationItem";
-
-// import Helper functions
-import { createApplication, createNewRole, fetchData, waait } from "../helpers";
+import Table from "../components/Table";
 
 // Data loader function
 export const dashboardLoader = () => {
   const userName = fetchData("userName");
   const roles = fetchData("roles");
+  const applications = fetchData("applications");
   return {
     userName,
     roles,
+    applications,
   };
 };
 
@@ -65,7 +68,7 @@ export async function dashboardAction({ request }) {
         status: values.status,
         notes: values.notes,
         deadlineDate: values.deadlineDate,
-        budgetId: values.matchingRole,
+        roleId: values.matchingRole,
       });
       // Check if deadlineDate has already passed
       const deadlineDate = new Date(values.deadlineDate);
@@ -85,7 +88,7 @@ export async function dashboardAction({ request }) {
 }
 
 const Dashboard = () => {
-  const { userName, roles: roles } = useLoaderData();
+  const { userName, roles, applications } = useLoaderData();
   return (
     <>
       {userName ? (
@@ -106,6 +109,55 @@ const Dashboard = () => {
                     return <ApplicationItem key={role.id} role={role} />;
                   })}
                 </div>
+                {applications && applications.length > 0 && (
+                  <div className="grid-md">
+                    <h2>Approaching Deadline</h2>
+                    <Table
+                      roles={roles}
+                      // sort applications by deadline date where status is interested and provide a note if there is none
+                      applications={applications
+                        .filter(
+                          (application) =>
+                            application.status.toLowerCase() === "interested"
+                        )
+                        .sort((a, b) => {
+                          const aDate = new Date(a.deadlineDate);
+                          const bDate = new Date(b.deadlineDate);
+                          return aDate - bDate;
+                        })
+                        .slice(0, 5)}
+                    />
+                    {applications.length > 5 && (
+                      <Link to="applications" className="btn btn--dark">
+                        View all applications
+                      </Link>
+                    )}
+                  </div>
+                )}
+                {applications && applications.length > 0 && (
+                  <div className="grid-md">
+                    <h2>Recent Applications</h2>
+                    <Table
+                      roles={roles}
+                      // show all applications where status is not interested
+                      applications={applications
+                        .filter(
+                          (application) => application.status !== "interested"
+                        )
+                        .sort((a, b) => {
+                          const aDate = new Date(a.createdAt);
+                          const bDate = new Date(b.createdAt);
+                          return bDate - aDate;
+                        })
+                        .slice(0, 5)}
+                    />
+                    {applications.length > 5 && (
+                      <Link to="applications" className="btn btn--dark">
+                        View all applications
+                      </Link>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="grid-sm">

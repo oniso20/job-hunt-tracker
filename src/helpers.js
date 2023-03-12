@@ -35,7 +35,7 @@ export const createNewRole = ({ name, amount }) => {
 
 export const createApplication = ({
     name,
-    budgetId,
+    roleId,
     source,
     deadlineDate,
     status,
@@ -49,7 +49,7 @@ export const createApplication = ({
         status,
         notes,
         deadlineDate,
-        budgetId: budgetId
+        roleId: roleId
     };
     const existingApplications = fetchData("applications") ?? [];
     return localStorage.setItem("applications",
@@ -62,3 +62,45 @@ export const createApplication = ({
 export const deleteData = ({ key }) => {
     return localStorage.removeItem(key);
 };
+
+// total applied
+
+export const totalApplied = (roleId) => {
+    const applications = fetchData("applications") ?? [];
+    return applications.filter(app => app.roleId === roleId).length;
+};
+
+// total remaining
+
+export const totalRemaining = (roleId) => {
+    const role = fetchData("roles").find(role => role.id === roleId);
+    return role.amount - totalApplied(roleId);
+};
+
+// get role from roles
+
+export const getRole = (roleId) => {
+    const roleData = fetchData("roles").find(role => role.id === roleId);
+    return roleData;
+};
+
+// get role id, name, color from roles
+
+export const getRoleData = (roleId) => {
+    const roleData = fetchData("roles").find(role => role.id === roleId);
+    return roleData;
+};
+
+
+// get all items from local storage
+
+export const getAllMatchingItems = ({ category, key, value }) => {
+    const data = fetchData("roles") ?? [];
+    return data.filter(item => item[category] === key && item[key] === value);
+};
+
+// const role = getAllMatchingItems({
+//     category: "roles",
+//     key: "id",
+//     value: application.roleId,
+//   });

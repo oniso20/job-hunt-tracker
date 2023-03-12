@@ -58,7 +58,7 @@ const AddApplicationForm = ({ roles }) => {
           <div className="grid-xs">
             <label htmlFor="status">Application Status</label>
             <select name="status" id="status" required>
-              <option value="Saved">Interested</option>
+              <option value="Interested">Interested</option>
               <option value="Applied">Applied</option>
               <option value="Interviewing">Interviewing</option>
               <option value="Rejected">Job offer</option>

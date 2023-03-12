@@ -11,6 +11,12 @@ export async function logoutAction() {
     // delete the user
     deleteData({ key: "userName" });
 
+    // delete roles
+    deleteData({ key: "roles" });
+
+    // delete applications
+    deleteData({ key: "applications" });
+
     // show a toast
     toast.success("Deleted account successfully");
 
